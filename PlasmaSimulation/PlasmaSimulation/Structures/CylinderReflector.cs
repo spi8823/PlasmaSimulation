@@ -45,9 +45,9 @@ namespace PlasmaSimulation
             var t1 = (-b + e) / (2 * a);
             var t2 = (-b - e) / (2 * a);
 
-            if (Abs(t1) < 0.0001)
+            if (Abs(t1) < RoundingValue)
                 t1 = 0;
-            if (Abs(t2) < 0.0001)
+            if (Abs(t2) < RoundingValue)
                 t2 = 0;
 
             //t1 * t2 < 0 つまり円筒の内部にいた場合
@@ -66,7 +66,7 @@ namespace PlasmaSimulation
 
                     return new Collision(x, n, t, ID);
                 }
-                //ないときー
+                //それ以外
                 else
                     return null;
             }
@@ -89,11 +89,11 @@ namespace PlasmaSimulation
 
                     return new Collision(x2, n, t2, ID);
                 }
-                //ないときー
+                //それ以外
                 else
                     return null;
             }
-            //ないときー
+            //それ以外
             else
                 return null;
         }

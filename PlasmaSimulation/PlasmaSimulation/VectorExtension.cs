@@ -60,5 +60,7 @@ namespace PlasmaSimulation
         {
             return a.X * b.X + a.Y * b.Y + a.Z * b.Z;
         }
+
+        public const double RoundingValue = 0.00000001;
     }
 }

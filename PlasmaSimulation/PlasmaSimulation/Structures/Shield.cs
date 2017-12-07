@@ -29,7 +29,7 @@ namespace PlasmaSimulation
             //x = atom.Position + atom.Velocity * t
             //賢い！！！！！
             var t = Dot(Normal, (Position - atom.Position)) / Dot(Normal, atom.Velocity);
-            if (t <= 0)
+            if (t <= RoundingValue)
                 return null;
 
             var x = atom.Position + atom.Velocity * t;

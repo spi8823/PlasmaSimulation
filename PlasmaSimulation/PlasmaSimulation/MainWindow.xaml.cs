@@ -36,8 +36,12 @@ namespace PlasmaSimulation
 
             var geometry = new KatayamaGeometry(nozzle, reflector, shield, target, 50, 100, Atom.ReflectionPattern.Specularly);
 
-            var count = 10000;
-            var result = Geometry.Process(geometry, count);
+            var count = 100000;
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            var result = geometry.ProcessAsParallel(count);
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds + "ms");
             Console.WriteLine(result.Count(r => r != null) + " / " + count.ToString());
         }
     }

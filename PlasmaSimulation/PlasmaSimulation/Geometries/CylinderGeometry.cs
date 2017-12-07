@@ -9,8 +9,9 @@ namespace PlasmaSimulation
     public class CylinderGeometry : Geometry
     {
         protected CylinderGeometry(int limit, Atom.ReflectionPattern pattern)
-            : base(limit, pattern)
+            : base(limit, pattern, null)
         {
+            throw new NotImplementedException();
         }
 
         protected override Atom CreateAtomRandomly(Random random)
@@ -18,7 +19,12 @@ namespace PlasmaSimulation
             throw new NotImplementedException();
         }
 
-        protected override Vector? GetResult(Atom atom)
+        protected override List<Vector?> GetTrack(Atom atom)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override bool ShouldTerminate(Collision collision)
         {
             throw new NotImplementedException();
         }

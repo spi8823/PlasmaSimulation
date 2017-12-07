@@ -17,7 +17,7 @@ namespace PlasmaSimulation
         private double Length { get; }
 
         public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, double length, int limit, Atom.ReflectionPattern pattern)
-            :base(limit, pattern)
+            :base(limit, pattern, new Structure[] { nozzle, reflector, shield, target })
         {
             Nozzle = nozzle;
             Reflector = reflector;
@@ -51,48 +51,9 @@ namespace PlasmaSimulation
             return new Atom(position, velocity);
         }
 
-        protected override Vector? GetResult(Atom atom)
+        protected override bool ShouldTerminate(Collision collision)
         {
-            //ジオメトリ内の構造物の配列
-            var structures = new Structure[] { Nozzle, Reflector, Shield, Target };
-
-            //反射回数が上限に達するまで回す
-            var count = 0;
-            while (count++ < ReflectionLimit)
-            {
-                //構造物とAtomの衝突情報
-                var collisions = from s
-                                 in structures
-                                 let c = s.GetCollision(atom)
-                                 where c != null
-                                 select c.Value;
-
-                //衝突しなかったらどっかに行く
-                if (!collisions.Any())
-                {
-                    Console.WriteLine("Far away");                    
-                    return null;
-                }
-                var minTime = collisions.Min(c => c.Time);
-                var collision = collisions.First(c => c.Time == minTime);
-
-                //Targetと衝突したらおしまい
-                if (collision.StructureID == Target.ID)
-                {
-                    if((collision.Position - Target.Position).Length() > 10)
-                    {
-                        var r = new Vector(atom.Position.X, atom.Position.Y, 0).Length();
-                    }
-                    return collision.Position;
-                }
-
-                //衝突する
-                atom.Update(collision.Time);
-                atom.ReflectSpecularly(collision.Normal);
-            }
-
-            Console.WriteLine("Too many");
-            return null;
+            return collision.StructureID == Target.ID;
         }
 
         protected override Geometry Copy()
