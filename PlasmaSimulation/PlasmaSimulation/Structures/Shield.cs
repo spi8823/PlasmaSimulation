@@ -12,32 +12,36 @@ namespace PlasmaSimulation
         public int ID { get; }
         public double Radius { get; }
         public Vector Position { get; }
-        public Vector Normal { get; }
 
-        public Shield(double radius, Vector position, Vector normal, int id)
+        /// <summary>
+        /// 面の法線
+        /// </summary>
+        public Vector Direction { get; }
+
+        public Shield(int id, Vector position, Vector direction, double radius)
         {
             Radius = radius;
             Position = position;
-            Normal = normal;
+            Direction = direction;
             ID = id;
         }
 
         public Collision? GetCollision(Atom atom)
         {
             
-            //Normal * (x - Position) = 0
+            //Direction * (x - Position) = 0
             //x = atom.Position + atom.Velocity * t
             //賢い！！！！！
-            var t = Dot(Normal, (Position - atom.Position)) / Dot(Normal, atom.Velocity);
+            var t = Dot(Direction, (Position - atom.Position)) / Dot(Direction, atom.Velocity);
             if (t <= RoundingValue)
                 return null;
 
             var x = atom.Position + atom.Velocity * t;
-            if ((x - Position).Length() > Radius)
+            if ((x - Position).Length > Radius)
                 return null;
 
-            var normal = Normal;
-            if (Dot(atom.Velocity,normal) > 0)
+            var normal = Direction;
+            if (Dot(atom.Velocity, normal) > 0)
                 normal = -1 * normal;
             return new Collision(x, normal, t, ID);
         }

@@ -19,12 +19,12 @@ namespace PlasmaSimulation
         public Vector Position { get; }
         public Vector Direction { get; }
 
-        public CylinderReflector(double length, double radius, Vector position, Vector direction, int id)
+        public CylinderReflector(int id, Vector position, Vector direction, double length, double radius)
         {
             Length = length;
             Radius = radius;
             Position = position;
-            Direction = direction;
+            Direction = direction.Normal;
             ID = id;
         }
 
@@ -87,7 +87,10 @@ namespace PlasmaSimulation
                     var d = Direction * Dot(Direction, dx);
                     var n = -1 * (dx - d) * (1 / Radius);
 
-                    return new Collision(x2, n, t2, ID);
+                    if(Dot(atom.Velocity, n) < 0)
+                        return new Collision(x2, n, Max(t1, t2), ID);
+
+                    return null;
                 }
                 //それ以外
                 else

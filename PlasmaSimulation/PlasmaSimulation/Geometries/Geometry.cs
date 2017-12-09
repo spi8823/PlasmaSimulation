@@ -16,7 +16,7 @@ namespace PlasmaSimulation
         /// <summary>
         /// 構造体の配列
         /// </summary>
-        protected Structure[] Structures { get; }
+        public Structure[] Structures { get; }
 
         /// <summary>
         /// 反射のパターン
@@ -40,14 +40,18 @@ namespace PlasmaSimulation
         /// </summary>
         /// <param name="random"></param>
         /// <returns>初期化したAtom</returns>
-        protected abstract Atom CreateAtomRandomly(Random random);
+        public abstract Atom CreateAtomRandomly(Random random);
+
+        public Atom CreateAtomRandomly() => CreateAtomRandomly(new Random());
+
+        public List<Vector?> GetTrack() => GetTrack(CreateAtomRandomly());
 
         /// <summary>
         /// ジオメトリの中でAtomに対して一連の処理をした結果を返す
         /// </summary>
         /// <param name="atom"></param>
         /// <returns>処理結果</returns>
-        protected virtual List<Vector?> GetTrack(Atom atom)
+        public virtual List<Vector?> GetTrack(Atom atom)
         {
             var track = new List<Vector?>();
             //反射回数が上限に達するまで回す
@@ -56,15 +60,16 @@ namespace PlasmaSimulation
             {
                 track.Add(atom.Position);
                 //構造物とAtomの衝突情報
-                var collisions = from s
+                var collisions = (from s
                                  in Structures
                                  let c = s.GetCollision(atom)
                                  where c != null
-                                 select c.Value;
+                                 select c.Value).ToList();
 
                 //衝突しなかったらどっかに行く
                 if (!collisions.Any())
                 {
+                    track.Add(atom.Position + atom.Velocity * 10);
                     track.Add(null);
                     return track;
                 }
@@ -74,8 +79,10 @@ namespace PlasmaSimulation
 
                 //Targetと衝突したらおしまい
                 if (ShouldTerminate(collision))
+                {
+                    track.Add(collision.Position);
                     return track;
-
+                }
                 //衝突する
                 atom.Update(collision.Time);
                 atom.Reflect(collision.Normal, ReflectionPattern);
@@ -95,11 +102,11 @@ namespace PlasmaSimulation
             while (count++ < ReflectionLimit)
             {
                 //構造物とAtomの衝突情報
-                var collisions = from s
+                var collisions = (from s
                                  in Structures
                                  let c = s.GetCollision(atom)
                                  where c != null
-                                 select c.Value;
+                                 select c.Value).ToList();
 
                 //衝突しなかったらどっかに行く
                 if (!collisions.Any())

@@ -26,17 +26,21 @@ namespace PlasmaSimulation
             InitializeComponent();
 
             var nozzle = 
-                new CylinderReflector(10, 5, new Vector(0, 0, 0), new Vector(0, 0, 1), 0);
+                new CylinderReflector(0, Vector.Zero, Vector.Forward, 20, 2.5);
             var reflector = 
-                new CylinderReflector(10, 10, new Vector(0, 0, 10), new Vector(0, 0, 1), 1);
+                new CylinderReflector(1, Vector.Forward * 20, Vector.Forward, 20, 5);
             var shield = 
-                new Shield(5, new Vector(0, 0, 15), new Vector(0, 0, 1), 2);
+                new Shield(2, Vector.Forward * 30, Vector.Forward, 0);
             var target = 
-                new Shield(10, new Vector(0, 0, 20), new Vector(0, 0, 1), 3);
+                new Shield(3, Vector.Forward * 40, Vector.Forward, 5);
 
-            var geometry = new KatayamaGeometry(nozzle, reflector, shield, target, 50, 100, Atom.ReflectionPattern.Specularly);
+            var geometry = new KatayamaGeometry(nozzle, reflector, shield, target, 50, 50, Atom.ReflectionPattern.Specularly);
+            var window = new GUI.GraphicalGeometryWindow(geometry);
+            window.ShowDialog();
+            Close();
+            return;
 
-            var count = 100000;
+            var count = 10000;
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             var result = geometry.ProcessAsParallel(count);

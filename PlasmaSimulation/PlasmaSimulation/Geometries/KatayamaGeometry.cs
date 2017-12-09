@@ -26,7 +26,7 @@ namespace PlasmaSimulation
             Length = length;
         }
 
-        protected override Atom CreateAtomRandomly(Random random)
+        public override Atom CreateAtomRandomly(Random random)
         {
             //位置
             var r = random.NextDouble();

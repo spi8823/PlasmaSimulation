@@ -8,6 +8,16 @@ namespace PlasmaSimulation
 {
     public struct Vector
     {
+        public static readonly Vector Right = new Vector(1, 0, 0);
+        public static readonly Vector Left = new Vector(-1, 0, 0);
+        public static readonly Vector Up = new Vector(0, 1, 0);
+        public static readonly Vector Down = new Vector(0, -1, 0);
+        public static readonly Vector Forward = new Vector(0, 0, 1);
+        public static readonly Vector Back = new Vector(0, 0, -1);
+
+        public static readonly Vector Zero = new Vector(0, 0, 0);
+        public static readonly Vector One = new Vector(1, 1, 1);
+
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
@@ -19,10 +29,11 @@ namespace PlasmaSimulation
             Z = z;
         }
 
-        public double Length()
-        {
-            return Math.Sqrt(X * X + Y * Y + Z * Z);
-        }
+        public double Length => Math.Sqrt(X * X + Y * Y + Z * Z);
+
+        public Vector Normal => this / Length;
+
+        public System.Windows.Media.Media3D.Vector3D Vector3D => new System.Windows.Media.Media3D.Vector3D(X, Y, Z);
 
         public static Vector operator+(Vector a, Vector b)
         {
@@ -32,6 +43,11 @@ namespace PlasmaSimulation
         public static Vector operator*(Vector a, double d)
         {
             return new Vector(a.X * d, a.Y * d, a.Z * d);
+        }
+
+        public static Vector operator/(Vector a, double d)
+        {
+            return a * (1 / d);
         }
 
         public static Vector operator*(double d, Vector a)

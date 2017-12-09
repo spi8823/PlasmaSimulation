@@ -14,12 +14,12 @@ namespace PlasmaSimulation
             throw new NotImplementedException();
         }
 
-        protected override Atom CreateAtomRandomly(Random random)
+        public override Atom CreateAtomRandomly(Random random)
         {
             throw new NotImplementedException();
         }
 
-        protected override List<Vector?> GetTrack(Atom atom)
+        public override List<Vector?> GetTrack(Atom atom)
         {
             throw new NotImplementedException();
         }
