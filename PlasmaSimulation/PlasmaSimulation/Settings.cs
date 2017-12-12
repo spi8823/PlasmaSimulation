@@ -21,6 +21,7 @@ namespace PlasmaSimulation
                 new Shield(2, Vector.Forward * 15, Vector.Forward, 2.5),
                 new Shield(3, Vector.Forward * 20, Vector.Forward, 5),
                 100, 
+                1,
                 Atom.ReflectionPattern.Specularly);
         }
 

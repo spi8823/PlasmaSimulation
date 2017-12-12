@@ -12,6 +12,8 @@ namespace PlasmaSimulation
         /// 反射回数の上限
         /// </summary>
         public int ReflectionLimit { get; set; }
+
+        public double ReflectionCoefficient { get; set; }
         
         [Newtonsoft.Json.JsonIgnore()]
         /// <summary>
@@ -29,9 +31,10 @@ namespace PlasmaSimulation
         /// コンパイラ
         /// </summary>
         /// <param name="limit"></param>
-        protected Geometry(int limit, Atom.ReflectionPattern pattern, Structure[] structures)
+        protected Geometry(int limit, double reflectionCoefficient, Atom.ReflectionPattern pattern, Structure[] structures)
         {
             ReflectionLimit = limit;
+            ReflectionCoefficient = reflectionCoefficient;
             ReflectionPattern = pattern;
             Structures = structures;
         }
@@ -45,14 +48,14 @@ namespace PlasmaSimulation
 
         public Atom CreateAtomRandomly() => CreateAtomRandomly(new Random());
 
-        public List<Vector?> GetTrack() => GetTrack(CreateAtomRandomly());
+        public List<Vector?> GetTrack() => GetTrack(CreateAtomRandomly(), new Random());
 
         /// <summary>
         /// ジオメトリの中でAtomに対して一連の処理をした結果を返す
         /// </summary>
         /// <param name="atom"></param>
         /// <returns>処理結果</returns>
-        public virtual List<Vector?> GetTrack(Atom atom)
+        public virtual List<Vector?> GetTrack(Atom atom, Random random)
         {
             var track = new List<Vector?>();
             //反射回数が上限に達するまで回す
@@ -78,15 +81,16 @@ namespace PlasmaSimulation
                 var minTime = collisions.Min(c => c.Time);
                 var collision = collisions.First(c => c.Time == minTime);
 
+                //衝突する
+                atom.Update(collision.Time);
+                atom.Reflect(collision.Normal, ReflectionPattern);
+
                 //Targetと衝突したらおしまい
-                if (ShouldTerminate(collision))
+                if (ShouldTerminate(collision) || random.NextDouble() > ReflectionCoefficient)
                 {
                     track.Add(collision.Position);
                     return track;
                 }
-                //衝突する
-                atom.Update(collision.Time);
-                atom.Reflect(collision.Normal, ReflectionPattern);
             }
             return track;
         }
@@ -96,7 +100,7 @@ namespace PlasmaSimulation
         /// </summary>
         /// <param name="atom"></param>
         /// <returns>処理結果</returns>
-        protected virtual Vector? GetResult(Atom atom)
+        protected virtual Vector? GetResult(Atom atom, Random random)
         {
             //反射回数が上限に達するまで回す
             var count = 0;
@@ -116,13 +120,13 @@ namespace PlasmaSimulation
                 var minTime = collisions.Min(c => c.Time);
                 var collision = collisions.First(c => c.Time == minTime);
 
-                //Targetと衝突したらおしまい
-                if (ShouldTerminate(collision))
-                    return atom.Position;
 
                 //衝突する
                 atom.Update(collision.Time);
                 atom.Reflect(collision.Normal, ReflectionPattern);
+
+                if (ShouldTerminate(collision) || (random.NextDouble() > ReflectionCoefficient))
+                    return atom.Position;
             }
             return null;
         }
@@ -145,16 +149,17 @@ namespace PlasmaSimulation
         public virtual List<Vector?> ProcessAsParallel(long count)
         {
             var random = new Random();
-            var array = new(Geometry geometry, Atom atom)[count];
+            var array = new(Geometry geometry, Atom atom, Random random)[count];
             for(var i = 0;i < count;i++)
             {
                 array[i].geometry = Copy();
                 array[i].atom = CreateAtomRandomly(random);
+                array[i].random = new Random(random.Next());
             }
 
             var result = from item
                          in array.AsParallel().WithDegreeOfParallelism(Environment.ProcessorCount)
-                         select item.geometry.GetResult(item.atom);
+                         select item.geometry.GetResult(item.atom, item.random);
 
             return result.ToList();
         }
@@ -174,7 +179,7 @@ namespace PlasmaSimulation
             for(var i = 0;i < count;i++)
             {
                 var atom = CreateAtomRandomly(random);
-                result.Add(GetResult(atom));
+                result.Add(GetResult(atom, random));
             }
 
             return result;
