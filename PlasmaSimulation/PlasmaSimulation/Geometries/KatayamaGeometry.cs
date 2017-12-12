@@ -14,16 +14,14 @@ namespace PlasmaSimulation
         private CylinderReflector Reflector { get; }
         private Shield Shield { get; }
         private Shield Target { get; }
-        private double Length { get; }
 
-        public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, double length, int limit, Atom.ReflectionPattern pattern)
+        public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, int limit, Atom.ReflectionPattern pattern)
             :base(limit, pattern, new Structure[] { nozzle, reflector, shield, target })
         {
             Nozzle = nozzle;
             Reflector = reflector;
             Shield = shield;
             Target = target;
-            Length = length;
         }
 
         public override Atom CreateAtomRandomly(Random random)
@@ -58,7 +56,7 @@ namespace PlasmaSimulation
 
         protected override Geometry Copy()
         {
-            return new KatayamaGeometry(Nozzle, Reflector, Shield, Target, Length, ReflectionLimit, ReflectionPattern);
+            return new KatayamaGeometry(Nozzle, Reflector, Shield, Target, ReflectionLimit, ReflectionPattern);
         }
     }
 }

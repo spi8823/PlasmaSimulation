@@ -13,5 +13,14 @@ namespace PlasmaSimulation
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            var font = new System.Windows.Media.FontFamily("メイリオ");
+
+            var style = new Style(typeof(Window));
+            style.Setters.Add(new Setter(System.Windows.Controls.Control.FontFamilyProperty, font));
+
+            FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(style));
+        }
     }
 }

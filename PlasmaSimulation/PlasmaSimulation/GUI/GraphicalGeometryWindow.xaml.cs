@@ -130,7 +130,7 @@ namespace PlasmaSimulation.GUI
         {
             var sphere = new SphereVisual3D();
             sphere.Material = new DiffuseMaterial(Brushes.Red);
-            sphere.Transform = GetTransform(position, Vector.Forward, Vector.One * 0.5);
+            sphere.Transform = GetTransform(position, Vector.Forward, Vector.One * 0.25);
             return sphere;
         }
 

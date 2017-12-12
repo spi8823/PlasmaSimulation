@@ -29,10 +29,20 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="5"/>
         </Grid.ColumnDefinitions>
-        <ht:HelixViewport3D x:Name="Viewport" Grid.Row="1" Grid.Column="1" ZoomExtentsWhenLoaded="True">
+        <ht:HelixViewport3D x:Name="Viewport" Grid.Row="1" Grid.Column="1" ZoomExtentsWhenLoaded="True" >
+            <ht:HelixViewport3D.PanGesture>
+                <MouseGesture Modifiers="" MouseAction="LeftClick"/>
+            </ht:HelixViewport3D.PanGesture>
+            <ht:HelixViewport3D.RotateGesture>
+                <MouseGesture Modifiers="" MouseAction="RightClick"/>
+            </ht:HelixViewport3D.RotateGesture>
             <ht:HelixViewport3D.Children>
                 <ht:SunLight/>
-                <ht:GridLinesVisual3D Width="100" Length="200" MinorDistance="5" MajorDistance="10" LengthDirection="0,1,0"/>
+                <ht:GridLinesVisual3D Width="100" Length="100" MinorDistance="5" MajorDistance="10">
+                    <ht:GridLinesVisual3D.Transform>
+                        <TranslateTransform3D />
+                    </ht:GridLinesVisual3D.Transform>
+                </ht:GridLinesVisual3D>
                 <ModelVisual3D x:Name="AtomTrack"/>
             </ht:HelixViewport3D.Children>
         </ht:HelixViewport3D>
