@@ -19,6 +19,7 @@ namespace PlasmaSimulation.GUI
     /// </summary>
     public partial class KatayamaGeometryWindow : Window
     {
+        private Settings Settings { get; set; }
         public KatayamaGeometryWindow()
         {
             InitializeComponent();
@@ -26,21 +27,34 @@ namespace PlasmaSimulation.GUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var window = new GraphicalGeometryWindow(GetGeometry());
+            window.ShowDialog();
+        }
+
+        private KatayamaGeometry GetGeometry()
+        {
             var nozzle = NozzleSettingPanel.CylinderReflector;
             var reflector = ReflectorSettingPanel.CylinderReflector;
             var shield = ShieldSettingPanel.Shield;
             var target = TargetSettingPanel.Shield;
 
-            var window = new GraphicalGeometryWindow(new KatayamaGeometry(nozzle, reflector, shield, target, 100, Atom.ReflectionPattern.Specularly));
-            window.ShowDialog();
+            return new KatayamaGeometry(nozzle, reflector, shield, target, 100, Atom.ReflectionPattern.Specularly);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            NozzleSettingPanel.Set(Vector.Zero, Vector.Forward, 2.5, 10);
-            ReflectorSettingPanel.Set(Vector.Forward * 10, Vector.Forward, 5, 10);
-            ShieldSettingPanel.Set(Vector.Forward * 15, Vector.Forward, 2.5);
-            TargetSettingPanel.Set(Vector.Forward * 20, Vector.Forward, 5);
+            Settings = Settings.Load();
+            var geometry = Settings.KatayamaGeometry;
+            NozzleSettingPanel.Set((CylinderReflector)geometry.Structures[0]);
+            ReflectorSettingPanel.Set((CylinderReflector)geometry.Structures[1]);
+            ShieldSettingPanel.Set((Shield)geometry.Structures[2]);
+            TargetSettingPanel.Set((Shield)geometry.Structures[3]);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Settings.KatayamaGeometry = GetGeometry();
+            Settings.Save(Settings);
         }
     }
 }

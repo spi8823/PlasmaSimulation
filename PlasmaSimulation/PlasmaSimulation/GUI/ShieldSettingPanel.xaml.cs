@@ -63,5 +63,10 @@ namespace PlasmaSimulation.GUI
             SetDirection(direction);
             Radius = radius;
         }
+
+        public void Set(Shield shield)
+        {
+            Set(shield.Position, shield.Direction, shield.Radius);
+        }
     }
 }

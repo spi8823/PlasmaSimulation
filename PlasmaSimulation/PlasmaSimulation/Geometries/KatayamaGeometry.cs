@@ -10,13 +10,32 @@ namespace PlasmaSimulation
 {
     public class KatayamaGeometry : Geometry
     {
-        private CylinderReflector Nozzle { get; }
-        private CylinderReflector Reflector { get; }
-        private Shield Shield { get; }
-        private Shield Target { get; }
+        public CylinderReflector Nozzle
+        {
+            get { return (CylinderReflector)Structures[0]; }
+            set { Structures[0] = value; }
+        }
+
+        public CylinderReflector Reflector
+        {
+            get { return (CylinderReflector)Structures[1]; }
+            set { Structures[1] = value; }
+        }
+
+        public Shield Shield
+        {
+            get { return (Shield)Structures[2]; }
+            set { Structures[2] = value; }
+        }
+
+        public Shield Target
+        {
+            get { return (Shield)Structures[3]; }
+            set { Structures[3] = value; }
+        }
 
         public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, int limit, Atom.ReflectionPattern pattern)
-            :base(limit, pattern, new Structure[] { nozzle, reflector, shield, target })
+            : base(limit, pattern, new Structure[4])
         {
             Nozzle = nozzle;
             Reflector = reflector;

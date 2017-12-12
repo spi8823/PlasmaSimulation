@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PlasmaSimulation.GUI"
         mc:Ignorable="d"
-        Title="KatayamaGeometryWindow" Height="690" Width="440" Loaded="Window_Loaded">
+        Title="KatayamaGeometryWindow" Height="690" Width="440" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <Style TargetType="GroupBox">
             <Setter Property="Width" Value="400"/>

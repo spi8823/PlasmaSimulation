@@ -71,5 +71,10 @@ namespace PlasmaSimulation.GUI
             Radius = radius;
             Length = length;
         }
+
+        public void Set(CylinderReflector cylinderReflector)
+        {
+            Set(cylinderReflector.Position, cylinderReflector.Direction, cylinderReflector.Radius, cylinderReflector.Length);
+        }
     }
 }

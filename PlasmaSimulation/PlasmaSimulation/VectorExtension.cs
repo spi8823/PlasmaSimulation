@@ -29,10 +29,13 @@ namespace PlasmaSimulation
             Z = z;
         }
 
+        [Newtonsoft.Json.JsonIgnore()]
         public double Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
+        [Newtonsoft.Json.JsonIgnore()]
         public Vector Normal => this / Length;
 
+        [Newtonsoft.Json.JsonIgnore()]
         public System.Windows.Media.Media3D.Vector3D Vector3D => new System.Windows.Media.Media3D.Vector3D(X, Y, Z);
 
         public static Vector operator+(Vector a, Vector b)

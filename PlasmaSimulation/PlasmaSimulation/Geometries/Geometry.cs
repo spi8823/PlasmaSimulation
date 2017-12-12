@@ -11,8 +11,9 @@ namespace PlasmaSimulation
         /// <summary>
         /// 反射回数の上限
         /// </summary>
-        protected int ReflectionLimit { get; }
+        public int ReflectionLimit { get; set; }
         
+        [Newtonsoft.Json.JsonIgnore()]
         /// <summary>
         /// 構造体の配列
         /// </summary>
@@ -22,7 +23,7 @@ namespace PlasmaSimulation
         /// 反射のパターン
         /// Structureに持たせたほうがいいかも？
         /// </summary>
-        protected Atom.ReflectionPattern ReflectionPattern { get; }
+        public Atom.ReflectionPattern ReflectionPattern { get; set; }
 
         /// <summary>
         /// コンパイラ

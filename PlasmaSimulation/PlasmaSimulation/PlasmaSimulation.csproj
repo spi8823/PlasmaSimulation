@@ -105,6 +105,7 @@
     <Compile Include="GUI\VectorUpDown.xaml.cs">
       <DependentUpon>VectorUpDown.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Structures\CylinderReflector.cs" />
     <Compile Include="Structures\Shield.cs" />
     <Compile Include="Structures\Structure.cs" />
