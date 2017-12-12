@@ -53,7 +53,7 @@ namespace PlasmaSimulation
 
         public bool Reflect(Vector normal, ReflectionPattern pattern)
         {
-            switch(pattern)
+            switch (pattern)
             {
                 case ReflectionPattern.Specularly:
                     return ReflectSpecularly(normal);
@@ -66,7 +66,7 @@ namespace PlasmaSimulation
 
         public enum ReflectionPattern
         {
-            Specularly, Randomly
+            Specularly = 0, Randomly = 1
         }
     }
 }

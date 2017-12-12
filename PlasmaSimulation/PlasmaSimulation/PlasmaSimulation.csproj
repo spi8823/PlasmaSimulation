@@ -99,6 +99,9 @@
     <Compile Include="GUI\KatayamaGeometryWindow.xaml.cs">
       <DependentUpon>KatayamaGeometryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ReflectionPatternSelector.xaml.cs">
+      <DependentUpon>ReflectionPatternSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ShieldSettingPanel.xaml.cs">
       <DependentUpon>ShieldSettingPanel.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\KatayamaGeometryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\ReflectionPatternSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

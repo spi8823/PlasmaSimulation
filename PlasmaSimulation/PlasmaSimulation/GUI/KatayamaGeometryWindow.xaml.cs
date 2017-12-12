@@ -37,8 +37,10 @@ namespace PlasmaSimulation.GUI
             var reflector = ReflectorSettingPanel.CylinderReflector;
             var shield = ShieldSettingPanel.Shield;
             var target = TargetSettingPanel.Shield;
+            var limit = ReflectionLimitUpDown.Value ?? 100;
+            var pattern = ReflectionPatternSelector.ReflectionPattern;
 
-            return new KatayamaGeometry(nozzle, reflector, shield, target, 100, Atom.ReflectionPattern.Specularly);
+            return new KatayamaGeometry(nozzle, reflector, shield, target, limit, pattern);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -49,6 +51,8 @@ namespace PlasmaSimulation.GUI
             ReflectorSettingPanel.Set((CylinderReflector)geometry.Structures[1]);
             ShieldSettingPanel.Set((Shield)geometry.Structures[2]);
             TargetSettingPanel.Set((Shield)geometry.Structures[3]);
+            ReflectionLimitUpDown.Value = geometry.ReflectionLimit;
+            ReflectionPatternSelector.ReflectionPattern = geometry.ReflectionPattern;
         }
 
         private void Window_Closed(object sender, EventArgs e)
