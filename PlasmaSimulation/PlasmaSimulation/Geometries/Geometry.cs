@@ -125,8 +125,11 @@ namespace PlasmaSimulation
                 atom.Update(collision.Time);
                 atom.Reflect(collision.Normal, ReflectionPattern);
 
-                if (ShouldTerminate(collision) || (random.NextDouble() > ReflectionCoefficient))
+                if (ShouldTerminate(collision))
                     return atom.Position;
+
+                if (random.NextDouble() > ReflectionCoefficient)
+                    return null;
             }
             return null;
         }
