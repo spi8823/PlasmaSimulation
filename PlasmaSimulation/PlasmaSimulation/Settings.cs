@@ -20,6 +20,9 @@ namespace PlasmaSimulation
                 new CylinderReflector(1, Vector.Forward * 10, Vector.Forward, 10, 5),
                 new Shield(2, Vector.Forward * 15, Vector.Forward, 2.5),
                 new Shield(3, Vector.Forward * 20, Vector.Forward, 5),
+                new CylinderReflector(4, Vector.Forward * 150 + Vector.Up * -150, Vector.Up, 300, 150),
+                new Shield(5, Vector.Forward * 150 + Vector.Up * 150, Vector.Up, 150),
+                new Shield(6, Vector.Forward * 150 + Vector.Up * -150, Vector.Up, 150),
                 100, 
                 1,
                 Atom.ReflectionPattern.Specularly);

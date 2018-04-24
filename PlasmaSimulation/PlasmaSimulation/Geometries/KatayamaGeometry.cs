@@ -12,35 +12,56 @@ namespace PlasmaSimulation
     {
         public CylinderReflector Nozzle
         {
-            get { return (CylinderReflector)Structures[0]; }
-            set { Structures[0] = value; }
+            get { return (CylinderReflector)Structures[3]; }
+            set { Structures[3] = value; }
         }
 
         public CylinderReflector Reflector
         {
-            get { return (CylinderReflector)Structures[1]; }
-            set { Structures[1] = value; }
+            get { return (CylinderReflector)Structures[4]; }
+            set { Structures[4] = value; }
         }
 
         public Shield Shield
+        {
+            get { return (Shield)Structures[5]; }
+            set { Structures[5] = value; }
+        }
+
+        public Shield Target
+        {
+            get { return (Shield)Structures[6]; }
+            set { Structures[6] = value; }
+        }
+
+        public CylinderReflector Chamber
+        {
+            get { return (CylinderReflector)Structures[0]; }
+            set { Structures[0] = value; }
+        }
+
+        public Shield ChamberTop
+        {
+            get { return (Shield)Structures[1]; }
+            set { Structures[1] = value; }
+        }
+
+        public Shield ChamberBottom
         {
             get { return (Shield)Structures[2]; }
             set { Structures[2] = value; }
         }
 
-        public Shield Target
-        {
-            get { return (Shield)Structures[3]; }
-            set { Structures[3] = value; }
-        }
-
-        public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, int limit, double reflectionCoefficient, Atom.ReflectionPattern pattern)
-            : base(limit, reflectionCoefficient, pattern, new Structure[4])
+        public KatayamaGeometry(CylinderReflector nozzle, CylinderReflector reflector, Shield shield, Shield target, CylinderReflector chamber, Shield chamberTop, Shield chamberBottom, int limit, double reflectionCoefficient, Atom.ReflectionPattern pattern)
+            : base(limit, reflectionCoefficient, pattern, new Structure[7])
         {
             Nozzle = nozzle;
             Reflector = reflector;
             Shield = shield;
             Target = target;
+            Chamber = chamber;
+            ChamberTop = chamberTop;
+            ChamberBottom = chamberBottom;
         }
 
         public override Atom CreateAtomRandomly(Random random)
@@ -51,7 +72,7 @@ namespace PlasmaSimulation
 
             var x = Nozzle.Radius * Pow(r, 0.5) * Cos(theta);
             var y = Nozzle.Radius * Pow(r, 0.5) * Sin(theta);
-            var z = 0.0;
+            var z = Nozzle.Position.Z;
 
             var position = new Vector(x, y, z );
 
@@ -75,7 +96,7 @@ namespace PlasmaSimulation
 
         protected override Geometry Copy()
         {
-            return new KatayamaGeometry(Nozzle, Reflector, Shield, Target, ReflectionLimit, ReflectionCoefficient, ReflectionPattern);
+            return new KatayamaGeometry(Nozzle, Reflector, Shield, Target, Chamber, ChamberTop, ChamberBottom, ReflectionLimit, ReflectionCoefficient, ReflectionPattern);
         }
     }
 }

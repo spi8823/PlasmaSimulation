@@ -161,7 +161,7 @@ namespace PlasmaSimulation
             }
 
             var result = from item
-                         in array.AsParallel().WithDegreeOfParallelism(Environment.ProcessorCount)
+                         in array.AsParallel().WithDegreeOfParallelism(Environment.ProcessorCount - 1)
                          select item.geometry.GetResult(item.atom, item.random);
 
             return result.ToList();

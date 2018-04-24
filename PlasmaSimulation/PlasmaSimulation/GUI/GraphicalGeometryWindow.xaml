@@ -38,7 +38,7 @@
             </ht:HelixViewport3D.RotateGesture>
             <ht:HelixViewport3D.Children>
                 <ht:SunLight/>
-                <ht:GridLinesVisual3D Width="100" Length="100" MinorDistance="5" MajorDistance="10">
+                <ht:GridLinesVisual3D Width="1000" Length="1000" MinorDistance="5" MajorDistance="10">
                     <ht:GridLinesVisual3D.Transform>
                         <TranslateTransform3D />
                     </ht:GridLinesVisual3D.Transform>

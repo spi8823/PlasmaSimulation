@@ -24,10 +24,20 @@ namespace PlasmaSimulation
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void StartKatayamaGeometry(object sender, RoutedEventArgs e)
+        {
             new GUI.KatayamaGeometryWindow().ShowDialog();
-            Close();
-            return;
+        }
+
+        private void StartCylinderGeometry(object sender, RoutedEventArgs e)
+        {
+            new GUI.CylinderGeometryWindow().ShowDialog();
         }
     }
 }

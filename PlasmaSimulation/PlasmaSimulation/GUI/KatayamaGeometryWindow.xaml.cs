@@ -37,21 +37,28 @@ namespace PlasmaSimulation.GUI
             var reflector = ReflectorSettingPanel.CylinderReflector;
             var shield = ShieldSettingPanel.Shield;
             var target = TargetSettingPanel.Shield;
+            var chamber = ChamberSettingPanel.CylinderReflector;
+            var chamberTop = ChamberTopSettingPanel.Shield;
+            var chamberBottom = ChamberBottomSettingPanel.Shield;
+
             var limit = ReflectionLimitUpDown.Value ?? 100;
             var coefficient = ReflectionCoefficientUpDown.Value ?? 1;
             var pattern = ReflectionPatternSelector.ReflectionPattern;
 
-            return new KatayamaGeometry(nozzle, reflector, shield, target, limit, coefficient, pattern);
+            return new KatayamaGeometry(nozzle, reflector, shield, target, chamber, chamberTop, chamberBottom, limit, coefficient, pattern);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Settings = Settings.Load();
             var geometry = Settings.KatayamaGeometry;
-            NozzleSettingPanel.Set((CylinderReflector)geometry.Structures[0]);
-            ReflectorSettingPanel.Set((CylinderReflector)geometry.Structures[1]);
-            ShieldSettingPanel.Set((Shield)geometry.Structures[2]);
-            TargetSettingPanel.Set((Shield)geometry.Structures[3]);
+            ChamberSettingPanel.Set((CylinderReflector)geometry.Structures[0]);
+            ChamberTopSettingPanel.Set((Shield)geometry.Structures[1]);
+            ChamberBottomSettingPanel.Set((Shield)geometry.Structures[2]);
+            NozzleSettingPanel.Set((CylinderReflector)geometry.Structures[3]);
+            ReflectorSettingPanel.Set((CylinderReflector)geometry.Structures[4]);
+            ShieldSettingPanel.Set((Shield)geometry.Structures[5]);
+            TargetSettingPanel.Set((Shield)geometry.Structures[6]);
             ReflectionLimitUpDown.Value = geometry.ReflectionLimit;
             ReflectionCoefficientUpDown.Value = geometry.ReflectionCoefficient;
             ReflectionPatternSelector.ReflectionPattern = geometry.ReflectionPattern;

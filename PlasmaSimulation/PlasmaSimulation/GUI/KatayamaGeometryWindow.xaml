@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PlasmaSimulation.GUI"
         xmlns:ewt="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="KatayamaGeometryWindow" Height="770" Width="430" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="KatayamaGeometryWindow" Height="770" Width="850" Loaded="Window_Loaded" Closed="Window_Closed">
     <Window.Resources>
         <Style TargetType="GroupBox">
             <Setter Property="Width" Value="400"/>
@@ -14,18 +14,33 @@
         </Style>
     </Window.Resources>
     <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-        <GroupBox Header="放電管" Width="400">
-            <local:CylinderReflectorSettingPanel x:Name="NozzleSettingPanel" ID="0"/>
-        </GroupBox>
-        <GroupBox Header="円筒" Width="400">
-            <local:CylinderReflectorSettingPanel x:Name="ReflectorSettingPanel" ID="1"/>
-        </GroupBox>
-        <GroupBox Header="遮蔽板" Width="400">
-            <local:ShieldSettingPanel x:Name="ShieldSettingPanel" ID="2"/>
-        </GroupBox>
-        <GroupBox Header="ターゲット" Width="400">
-            <local:ShieldSettingPanel x:Name="TargetSettingPanel" ID="3"/>
-        </GroupBox>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <GroupBox Header="放電管">
+                    <local:CylinderReflectorSettingPanel x:Name="NozzleSettingPanel" ID="0"/>
+                </GroupBox>
+                <GroupBox Header="円筒">
+                    <local:CylinderReflectorSettingPanel x:Name="ReflectorSettingPanel" ID="1"/>
+                </GroupBox>
+                <GroupBox Header="遮蔽板">
+                    <local:ShieldSettingPanel x:Name="ShieldSettingPanel" ID="2"/>
+                </GroupBox>
+                <GroupBox Header="ターゲット">
+                    <local:ShieldSettingPanel x:Name="TargetSettingPanel" ID="3"/>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <GroupBox Header="チャンバー">
+                    <local:CylinderReflectorSettingPanel x:Name="ChamberSettingPanel" ID="4"/>
+                </GroupBox>
+                <GroupBox Header="チャンバー蓋">
+                    <local:ShieldSettingPanel x:Name="ChamberTopSettingPanel" ID="5"/>
+                </GroupBox>
+                <GroupBox Header="チャンバー底">
+                    <local:ShieldSettingPanel x:Name="ChamberBottomSettingPanel" ID="6"/>
+                </GroupBox>
+            </StackPanel>
+        </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="反射回数制限" Width="80" Margin="10,0,0,0" VerticalAlignment="Center"/>
             <ewt:IntegerUpDown x:Name="ReflectionLimitUpDown" Width="60" Height="24" Margin="3" Increment="10"/>
