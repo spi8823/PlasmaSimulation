@@ -19,16 +19,27 @@ namespace PlasmaSimulation
         public Vector Position { get; }
         public Vector Direction { get; }
 
-        public CylinderReflector(int id, Vector position, Vector direction, double length, double radius)
+        public double? ReflectionCoefficient { get; }
+
+        public Collision Collision { get; }
+
+        public CylinderReflector(int id, Vector position, Vector direction, double length, double radius, double? reflectionCoefficient = null)
         {
             Length = length;
             Radius = radius;
             Position = position;
             Direction = direction.Normal;
+            ReflectionCoefficient = reflectionCoefficient;
             ID = id;
+            Collision = new Collision(ID);
         }
 
-        public Collision? GetCollision(Atom atom)
+        public Structure Copy()
+        {
+            return new CylinderReflector(ID, Position, Direction, Length, Radius, ReflectionCoefficient);
+        }
+
+        public void SetCollision(Atom atom)
         {
             //Direction x (atom.Position + atom.Velocity * t - Position) = r
             //賢い！！！
@@ -44,6 +55,11 @@ namespace PlasmaSimulation
             var e = Sqrt(b * b - 4 * a * c);
             var t1 = (-b + e) / (2 * a);
             var t2 = (-b - e) / (2 * a);
+            if(double.IsNaN(t1))
+            {
+                Collision.Disable();
+                return;
+            }
 
             if (Abs(t1) < RoundingValue)
                 t1 = 0;
@@ -56,49 +72,64 @@ namespace PlasmaSimulation
             {
                 var t = Max(t1, t2);
                 var x = atom.Position + atom.Velocity * t;
-
+                var dx = x - Position;
                 //移動した先が円筒に含まれていた場合
-                if (Dot(x - Position, Direction) > 0 && Dot(x - (Position + Length * Direction), Direction) < 0)
+                if (Dot(dx, Direction) > 0 && Dot(dx - Length * Direction, Direction) < 0)
                 {
-                    var dx = x - Position;
-                    var d = Direction * Dot(Direction, x - Position);
-                    var n = (Position + d - x) * (1 / Radius);
+                    var d = Direction * Dot(Direction, dx);
+                    var n = (d - dx) * (1 / Radius);
 
-                    return new Collision(x, n, t, ID);
+                    Collision.Set(x, n, t);
+                    return;
                 }
                 //それ以外
                 else
-                    return null;
+                {
+                    Collision.Disable();
+                    return;
+                }
             }
             //t1 > 0 && t2 > 0 つまり円筒の外部におり、円筒を突っ切るとき
             else if (t1 > 0 && t2 > 0)
             {
                 var x1 = atom.Position + atom.Velocity * Min(t1, t2);
                 var x2 = atom.Position + atom.Velocity * Max(t1, t2);
+                var dx = x2 - Position;
 
                 //円筒に外側から当たったとき
                 //これも考慮すべきかも
                 if (Dot(x1 - Position, Direction) > 0 && Dot(x1 - (Position + Length * Direction), Direction) < 0)
-                    return null;
-                //円筒が切れているところから内部に入り、円筒に内部から当たるとき
-                else if (Dot(x2 - Position, Direction) > 0 && Dot(x2 - (Position + Length * Direction), Direction) < 0)
                 {
-                    var dx = x2 - Position;
+                    Collision.Disable();
+                    return;
+                }
+                //円筒が切れているところから内部に入り、円筒に内部から当たるとき
+                else if (Dot(dx, Direction) > 0 && Dot(dx - Length * Direction, Direction) < 0)
+                {
                     var d = Direction * Dot(Direction, dx);
                     var n = -1 * (dx - d) * (1 / Radius);
 
-                    if(Dot(atom.Velocity, n) < 0)
-                        return new Collision(x2, n, Max(t1, t2), ID);
-
-                    return null;
+                    if (Dot(atom.Velocity, n) < 0)
+                    {
+                        Collision.Set(x2, n, Max(t1, t2));
+                        return;
+                    }
+                    Collision.Disable();
+                    return;
                 }
                 //それ以外
                 else
-                    return null;
+                {
+                    Collision.Disable();
+                    return;
+                }
             }
             //それ以外
             else
-                return null;
+            {
+                Collision.Disable();
+                return;
+            }
         }
     }
 

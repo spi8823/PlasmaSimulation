@@ -96,7 +96,14 @@ namespace PlasmaSimulation
 
         protected override Geometry Copy()
         {
-            return new KatayamaGeometry(Nozzle, Reflector, Shield, Target, Chamber, ChamberTop, ChamberBottom, ReflectionLimit, ReflectionCoefficient, ReflectionPattern);
+            return new KatayamaGeometry((CylinderReflector)Nozzle.Copy(), 
+                (CylinderReflector)Reflector.Copy(), 
+                (Shield)Shield.Copy(), 
+                (Shield)Target.Copy(), 
+                (CylinderReflector)Chamber.Copy(),
+                (Shield)ChamberTop.Copy(),
+                (Shield)ChamberBottom.Copy(),
+                ReflectionLimit, ReflectionCoefficient, ReflectionPattern);
         }
     }
 }

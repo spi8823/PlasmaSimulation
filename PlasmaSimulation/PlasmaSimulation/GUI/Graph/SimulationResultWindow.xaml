@@ -1,0 +1,27 @@
+﻿<Window x:Class="PlasmaSimulation.GUI.Graph.SimulationResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:PlasmaSimulation.GUI.Graph"
+        mc:Ignorable="d"
+        Title="HoleGeometryResultGraphWindow" Height="600" Width="900" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <oxy:Plot x:Name="GraphPlot" Margin="0,10,10,10">
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis x:Name="VerticalAxis" Title="流量(a.u.)" Maximum="1.05" Minimum="0.0" Position="Left" FontSize="30"/>
+                <oxy:LinearAxis x:Name="HorizontalAxis" Title="穴の半径(mm)" Minimum="0" Position="Bottom" FontSize="30"/>
+            </oxy:Plot.Axes>
+        </oxy:Plot>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0">
+            <Label x:Name="DiscriptionLabel" Content="Test" FontSize="20" Width="600"/>
+            <Button Content="画像出力" Width="80" Height="30" Margin="10" Click="OutputImage"/>
+            <Button Content="CSV出力" Width="80" Height="30" Margin="10" Click="OutputCSV"/>
+        </StackPanel>
+    </Grid>
+</Window>

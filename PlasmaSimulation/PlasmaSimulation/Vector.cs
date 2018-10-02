@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PlasmaSimulation.Extensions;
+using static System.Math;
 
 namespace PlasmaSimulation
 {
@@ -27,6 +29,21 @@ namespace PlasmaSimulation
             X = x;
             Y = y;
             Z = z;
+        }
+
+        public void Round()
+        {
+            double round(double d)
+            {
+                var n = Math.Round(d);
+                if (Abs(n - d) < RoundingValue)
+                    return n;
+                else return d;
+            };
+
+            X = round(X);
+            Y = round(Y);
+            Z = round(Z);
         }
 
         [Newtonsoft.Json.JsonIgnore()]
@@ -61,6 +78,57 @@ namespace PlasmaSimulation
         public static Vector operator-(Vector a, Vector b)
         {
             return a + (-1 * b);
+        }
+
+        public static Vector GetRandomCosineDistributionVector(Random random)
+        {
+            var r = random.NextDouble();
+            var theta = Acos(r);
+            r = random.NextDouble();
+            var phi = 2 * PI * r;
+
+            var x = Cos(phi) * Sin(theta);
+            var y = Sin(phi) * Sin(theta);
+            var z = Cos(theta);
+            var v = new Vector(x, y, z);
+
+            return v;
+        }
+
+        public static Vector GetSpecularlyReflectionVector(Vector v, Vector normal)
+        {
+            return v - 2 * Dot(normal, v) * normal;
+        }
+    }
+
+    public struct Rotation
+    {
+        public Vector Normal { get; set; }
+        public double Theta { get; set; }
+
+        public Rotation(Vector n, double theta)
+        {
+            Normal = n;
+            Theta = theta;
+        }
+
+        public Rotation(Vector from, Vector to)
+        {
+            Normal = Cross(from, to).Normal;
+            Theta = Acos(Dot(from, to) / (from.Length * to.Length));
+        }
+
+        public Vector Rotate(Vector v)
+        {
+            var sin = Sin(Theta);
+            var cos = Cos(Theta);
+
+            var parallel = Dot(v, Normal) * Normal;
+            var orthogonal = v - parallel;
+
+            var result = parallel + cos * orthogonal + sin * Cross(Normal, orthogonal);
+            result.Round();
+            return result;
         }
     }
 

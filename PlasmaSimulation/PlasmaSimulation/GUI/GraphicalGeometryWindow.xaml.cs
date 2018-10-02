@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static PlasmaSimulation.Extensions;
+using PlasmaSimulation.Structures;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 
@@ -23,6 +24,11 @@ namespace PlasmaSimulation.GUI
     public partial class GraphicalGeometryWindow : Window
     {
         private Geometry Geometry { get; }
+        public Point3D CameraPosition
+        {
+            get { return Viewport.Camera.Position; }
+            set { Viewport.Camera.Position = value; }
+        }
 
         public GraphicalGeometryWindow(Geometry geometry)
         {
@@ -34,12 +40,8 @@ namespace PlasmaSimulation.GUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var count = 10000;
-            var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();
             var result = Geometry.ProcessAsParallel(count);
-            sw.Stop();
-            Console.WriteLine(sw.ElapsedMilliseconds + "ms");
-            ProcessResultLabel.Content = result.LongCount(r => r != null) + " / " + count;
+            ProcessResultLabel.Content = result.LongCount(r => r.IsValid) + " / " + count;
             ShowGeometry();
             ShowAtomTrack();
         }
@@ -71,20 +73,23 @@ namespace PlasmaSimulation.GUI
             Model3D model = null;
             Vector scale;
 
-            if(structure is CylinderReflector cylinder)
+            if (structure is CylinderReflector cylinder)
             {
                 model = importer.Load(@"Models\Cylinder.obj");
                 scale = new Vector(cylinder.Radius, cylinder.Radius, cylinder.Length);
             }
-            else if(structure is Shield shield)
+            else if (structure is Shield shield)
             {
                 model = importer.Load(@"Models\Shield.obj");
                 scale = new Vector(shield.Radius, shield.Radius, 1);
             }
-            else
+            else if (structure is Hole hole)
             {
-                throw new NotImplementedException();
+                model = importer.Load(@"Models\Hole.obj");
+                scale = new Vector(hole.Radius, hole.Radius, 1);
             }
+            else
+                throw new NotImplementedException();
 
             var transform = GetTransform(structure.Position, structure.Direction, scale);
             model.Transform = transform;

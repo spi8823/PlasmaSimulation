@@ -5,22 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using static PlasmaSimulation.Extensions;
 
-namespace PlasmaSimulation
+namespace PlasmaSimulation.Structures
 {
-    public struct Shield : Structure
+    public struct Hole : Structure
     {
         public int ID { get; }
-        public double Radius { get; }
+
         public Vector Position { get; }
-        public double? ReflectionCoefficient { get; }
-        /// <summary>
-        /// 面の法線
-        /// </summary>
+
         public Vector Direction { get; }
+
+        public double Radius { get; }
+
+        public double? ReflectionCoefficient { get; }
 
         public Collision Collision { get; }
 
-        public Shield(int id, Vector position, Vector direction, double radius, double? reflectionCoefficient = null)
+        public Hole(int id, Vector position, Vector direction, double radius, double? reflectionCoefficient = null)
         {
             Radius = radius;
             Position = position;
@@ -32,7 +33,7 @@ namespace PlasmaSimulation
 
         public Structure Copy()
         {
-            return new Shield(ID, Position, Direction, Radius, ReflectionCoefficient);
+            return new Hole(ID, Position, Direction, Radius, ReflectionCoefficient);
         }
 
         public void SetCollision(Atom atom)
@@ -47,7 +48,7 @@ namespace PlasmaSimulation
                 return;
             }
             var x = atom.Position + atom.Velocity * t;
-            if ((x - Position).Length > Radius)
+            if ((x - Position).Length < Radius)
             {
                 Collision.Disable();
                 return;

@@ -23,6 +23,7 @@ namespace PlasmaSimulation.GUI
         public static readonly DependencyProperty IDProperty = DependencyProperty.Register("ID", typeof(int), typeof(CylinderReflectorSettingPanel));
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(double), typeof(CylinderReflectorSettingPanel));
         public static readonly DependencyProperty LengthProperty = DependencyProperty.Register("Length", typeof(double), typeof(CylinderReflectorSettingPanel));
+        public static readonly DependencyProperty ReflectionCoefficientProperty = DependencyProperty.Register("ReflectionCoefficient", typeof(double?), typeof(CylinderReflectorSettingPanel));
 
         public int ID
         {
@@ -42,7 +43,13 @@ namespace PlasmaSimulation.GUI
             set { SetValue(LengthProperty, value); }
         }
 
-        public CylinderReflector CylinderReflector => new CylinderReflector(ID, PositionUpDown.Vector, DirectionUpDown.Vector, Length, Radius);
+        public double? ReflectionCoefficient
+        {
+            get { return (double?)GetValue(ReflectionCoefficientProperty); }
+            set { SetValue(ReflectionCoefficientProperty, value); }
+        }
+
+        public CylinderReflector CylinderReflector => new CylinderReflector(ID, PositionUpDown.Vector, DirectionUpDown.Vector, Length, Radius, ReflectionCoefficient);
 
         public CylinderReflectorSettingPanel()
         {
@@ -64,17 +71,18 @@ namespace PlasmaSimulation.GUI
             DirectionUpDown.ZUpDown.Value = direction.Z;
         }
 
-        public void Set(Vector position, Vector direction, double radius, double length)
+        public void Set(Vector position, Vector direction, double radius, double length, double? reflectionCoefficient = null)
         {
             SetPosition(position);
             SetDirection(direction);
             Radius = radius;
             Length = length;
+            ReflectionCoefficient = reflectionCoefficient;
         }
 
         public void Set(CylinderReflector cylinderReflector)
         {
-            Set(cylinderReflector.Position, cylinderReflector.Direction, cylinderReflector.Radius, cylinderReflector.Length);
+            Set(cylinderReflector.Position, cylinderReflector.Direction, cylinderReflector.Radius, cylinderReflector.Length, cylinderReflector.ReflectionCoefficient);
         }
     }
 }

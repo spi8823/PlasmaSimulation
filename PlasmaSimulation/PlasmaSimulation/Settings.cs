@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PlasmaSimulation.Geometries;
+using PlasmaSimulation.Structures;
 
 namespace PlasmaSimulation
 {
@@ -12,6 +14,7 @@ namespace PlasmaSimulation
     {
         private const string SaveFileName = "Settings.json";
         public KatayamaGeometry KatayamaGeometry { get; set; }
+        public HoleGeometrySetting HoleGeometrySetting { get; set; }
 
         public Settings()
         {
@@ -26,6 +29,8 @@ namespace PlasmaSimulation
                 100, 
                 1,
                 Atom.ReflectionPattern.Specularly);
+
+            HoleGeometrySetting = new HoleGeometrySetting();
         }
 
         public static Settings Load()
@@ -42,6 +47,51 @@ namespace PlasmaSimulation
         {
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             File.WriteAllText(SaveFileName, json);
+        }
+    }
+
+    public class HoleGeometrySetting
+    {
+        public HoleGeometry HoleGeometry { get; set; }
+
+        public double MinimumReflectionCoefficient { get; set; }
+        public double MaximumReflectionCoefficient { get; set; }
+        public double ReflectionCoefficientInterval { get; set; }
+
+        public double MinimumRadius { get; set; }
+        public double MaximumRadius { get; set; }
+        public double RadiusInterval { get; set; }
+
+        public int SimulationCount { get; set; }
+        public int ReflectionLimit { get; set; }
+        public Atom.ReflectionPattern ReflectionPattern { get; set; }
+
+        public System.Windows.Media.Media3D.Point3D CameraPosition { get; set; }
+        public HoleExperimentDataSet DataSet { get; set; }
+
+        public HoleGeometrySetting()
+        {
+            HoleGeometry = new HoleGeometry(
+                100, 0.8, Atom.ReflectionPattern.Specularly,
+                new CylinderReflector(0, Vector.Zero, Vector.Forward, 40, 2.5),
+                new CylinderReflector(3, Vector.Forward * 40, Vector.Forward, 10, 2.5),
+                new Hole(1, Vector.Forward * 50, Vector.Forward, 5),
+                new Shield(2, Vector.Forward * 60, Vector.Forward, 16)
+                );
+
+            MinimumReflectionCoefficient = 0;
+            MaximumReflectionCoefficient = 1;
+            ReflectionCoefficientInterval = 0.1;
+
+            MinimumRadius = 0;
+            MaximumRadius = 7.5;
+            RadiusInterval = 0.5;
+
+            SimulationCount = 100000;
+            ReflectionLimit = 100;
+            ReflectionPattern = Atom.ReflectionPattern.Specularly;
+
+            CameraPosition = new System.Windows.Media.Media3D.Point3D();
         }
     }
 }

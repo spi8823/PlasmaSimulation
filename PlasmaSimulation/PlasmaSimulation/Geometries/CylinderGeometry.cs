@@ -16,7 +16,7 @@ namespace PlasmaSimulation
         public readonly double Resolution;
         public readonly double DefaultReflectionCoefficient = 0.1;
         public readonly double AtomCrossSection = 1 / Pow(10, 15);
-        public readonly long Count;
+        public readonly int Count;
 
         public double[] Distribution { get; private set; }
 
@@ -32,7 +32,7 @@ namespace PlasmaSimulation
             set { Structures[1] = value; }
         }
 
-        public CylinderGeometry(CylinderReflector cylinder, Shield bottom, double[] distribution, double time, double interval, double flux, double resolution, long count, int limit, Atom.ReflectionPattern pattern)
+        public CylinderGeometry(CylinderReflector cylinder, Shield bottom, double[] distribution, double time, double interval, double flux, double resolution, int count, int limit, Atom.ReflectionPattern pattern)
             : base(limit, 1, pattern, new Structure[2])
         {
             Cylinder = cylinder;
@@ -79,38 +79,50 @@ namespace PlasmaSimulation
         /// </summary>
         /// <param name="atom"></param>
         /// <returns>処理結果</returns>
-        protected override Vector? GetResult(Atom atom, Random random)
+        protected override bool GetResult(Atom atom, Random random)
         {
             //反射回数が上限に達するまで回す
             var count = 0;
             while (count++ < ReflectionLimit)
             {
-                //構造物とAtomの衝突情報
-                var collisions = (from s
-                                 in Structures
-                                  let c = s.GetCollision(atom)
-                                  where c != null
-                                  select c.Value).ToList();
+                Collision collision = null;
+                for (var i = 0; i < Structures.Length; i++)
+                {
+                    Structures[i].SetCollision(atom);
+                    var c = Structures[i].Collision;
+                    if (!c.IsValid || double.IsNaN(c.Time))
+                        continue;
+                    if (collision == null)
+                    {
+                        collision = c;
+                        continue;
+                    }
+                    if (c.Time < collision.Time)
+                    {
+                        collision = c;
+                    }
+                }
+                if (collision == null)
+                {
+                    atom.IsValid = false;
+                    return false;
+                }
 
-                //衝突しなかったらどっかに行く
-                if (!collisions.Any())
-                    return null;
-
-                var minTime = collisions.Min(c => c.Time);
-                var collision = collisions.First(c => c.Time == minTime);
-
-
-                //衝突する
                 atom.Update(collision.Time);
-                atom.Reflect(collision.Normal, ReflectionPattern);
-
+                atom.Reflect(collision.Normal, ReflectionPattern, random);
+                
                 if (ShouldTerminate(collision))
-                    return atom.Position;
-
+                {
+                    atom.IsValid = true;
+                    return true;
+                }
                 if (random.NextDouble() > GetReflectionCoefficient(collision.Position.Z))
-                    return atom.Position;
+                {
+                    atom.IsValid = true;
+                    return true;
+                }
             }
-            return null;
+            return false;
         }
 
         public double GetReflectionCoefficient(double z)
@@ -132,11 +144,11 @@ namespace PlasmaSimulation
 
             while(time < Time)
             {
-                foreach (var v in ProcessAsParallel(Count))
+                foreach (var atom in ProcessAsParallel(Count))
                 {
-                    if (v == null)
+                    if(!atom.IsValid)
                         continue;
-                    var p = v.Value;
+                    var p = atom.Position;
 
                     var index = p.Z / Resolution;
                     if (index > Distribution.Length - 1)
@@ -158,7 +170,7 @@ namespace PlasmaSimulation
 
         protected override Geometry Copy()
         {
-            return new CylinderGeometry(Cylinder, Bottom, Distribution.ToArray(), Time, Interval, Flux, Resolution, Count, ReflectionLimit, ReflectionPattern);
+            return new CylinderGeometry((CylinderReflector)Cylinder.Copy(), (Shield)Bottom.Copy(), Distribution.ToArray(), Time, Interval, Flux, Resolution, Count, ReflectionLimit, ReflectionPattern);
         }
     }
 }

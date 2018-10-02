@@ -17,5 +17,6 @@
     <StackPanel Orientation="Vertical" Margin="5">
         <Button Content="Katayama Geometry" Style="{StaticResource ButtonStyle}" Click="StartKatayamaGeometry"/>
         <Button Content="Cylinder Geometry" Style="{StaticResource ButtonStyle}" Click="StartCylinderGeometry"/>
+        <Button Content="Hole Geometry" Style="{StaticResource ButtonStyle}" Click="StartHoleGeometry"/>
     </StackPanel>
 </Window>

@@ -6,19 +6,34 @@ using System.Threading.Tasks;
 
 namespace PlasmaSimulation
 {
-    public struct Collision
+    public class Collision
     {
-        public double Time { get; }
-        public Vector Position { get; }
-        public Vector Normal { get; }
-        public int StructureID { get; }
+        public bool IsValid { get; set; }
+        public double Time { get; set; }
+        public Vector Position { get; set; }
+        public Vector Normal { get; set; }
+        public int StructureID { get; set; }
 
-        public Collision(Vector position, Vector normal, double time, int id)
+        public Collision(int id)
         {
+            IsValid = false;
+            Time = double.NaN;
+            Position = Vector.Zero;
+            Normal = Vector.Zero;
+            StructureID = id;
+        }
+
+        public void Disable()
+        {
+            IsValid = false;
+        }
+
+        public void Set(Vector position, Vector normal, double time)
+        {
+            IsValid = true;
             Position = position;
             Normal = normal;
             Time = time;
-            StructureID = id;
         }
     }
 }

@@ -1,0 +1,75 @@
+﻿<Window x:Class="PlasmaSimulation.GUI.HoleGeometryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ewt="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:PlasmaSimulation.GUI"
+        mc:Ignorable="d"
+        Title="HoleGeometryWindow" Height="880" Width="450" Loaded="Window_Loaded" Closed="Window_Closed">
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Label" x:Key="HeaderLabelStyle">
+            <Setter Property="Width" Value="110"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <GroupBox Header="ノズル">
+            <local:CylinderReflectorSettingPanel x:Name="NozzleSettingPanel" ID="0"/>
+        </GroupBox>
+        <GroupBox Header="サブノズル">
+            <local:CylinderReflectorSettingPanel x:Name="SubNozzleSettingPanel" ID="1"/>
+        </GroupBox>
+        <GroupBox Header="穴">
+            <local:HoleSettingPanel x:Name="HoleSettingPanel" ID="2"/>
+        </GroupBox>
+        <GroupBox Header="プローブ">
+            <local:ShieldSettingPanel x:Name="DetectorSettingPanel" ID="3"/>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="反射回数制限" Style="{StaticResource HeaderLabelStyle}"/>
+            <ewt:IntegerUpDown x:Name="ReflectionLimitUpDown" Width="60" Height="24" Margin="3" Increment="10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="反射率" Style="{StaticResource HeaderLabelStyle}"/>
+            <ewt:DoubleUpDown x:Name="MinimumReflectionCoefficientUpDown" Width="60" Height="24" Margin="3" Increment="0.1" Maximum="1" Minimum="0"/>
+            <Label Content="～" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ewt:DoubleUpDown x:Name="MaximumReflectionCoefficientUpDown" Width="60" Height="24" Margin="3" Increment="0.1" Maximum="1" Minimum="0"/>
+            <ewt:DoubleUpDown x:Name="ReflectionCoefficientIntervalUpDown" Width="60" Height="24" Margin="20,3,0,3" Increment="0.01" Maximum="1" Minimum="0"/>
+            <Label Content="間隔" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="穴径" Style="{StaticResource HeaderLabelStyle}"/>
+            <ewt:DoubleUpDown x:Name="MinimumRadiusUpDown" Width="60" Height="24" Margin="3" Increment="0.5" Maximum="100" Minimum="0"/>
+            <Label Content="～" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ewt:DoubleUpDown x:Name="MaximumRadiusUpDown" Width="60" Height="24" Margin="3" Increment="0.5" Maximum="100" Minimum="0"/>
+            <ewt:DoubleUpDown x:Name="RadiusIntervalUpDown" Width="60" Height="24" Margin="20,3,0,3" Increment="0.1" Maximum="100" Minimum="0"/>
+            <Label Content="間隔" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="反射パターン" Style="{StaticResource HeaderLabelStyle}"/>
+            <local:ReflectionPatternSelector x:Name="ReflectionPatternSelector" Margin="3"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="シミュレーション回数" Style="{StaticResource HeaderLabelStyle}"/>
+            <ewt:IntegerUpDown x:Name="SimulationCountUpDown" Width="100" Height="24" Margin="3" Increment="100000"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="実験値入力" Height="24" FontSize="12" Click="ShowDataSetWindow"/>
+            <Button Content="計算" Width="100" Height="24" FontSize="12" Click="CalculateButton_Clicked" Margin="10"/>
+            <Button x:Name="InterruptButton" Content="中断" IsEnabled="False" Width="60" Height="24" FontSize="12" Click="InterruptButton_Clicked" Margin="10"/>
+            <Button Content="ジオメトリを見る" Width="120" Height="24" FontSize="12" Click="ShowGeometry" Margin="10"/>
+        </StackPanel>
+        <ProgressBar x:Name="CalculationProgressBar" Height="16" Margin="10,0"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+            <Label x:Name="ProgressLabel" Content="進捗：0 / 0"/>
+            <Label x:Name="ElapsedTimeLabel" Content="経過時間：0秒" Margin="10,0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

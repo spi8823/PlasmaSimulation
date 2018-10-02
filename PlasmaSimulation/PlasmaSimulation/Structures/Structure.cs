@@ -11,6 +11,9 @@ namespace PlasmaSimulation
         int ID { get; }
         Vector Position { get; }
         Vector Direction { get; }
-        Collision? GetCollision(Atom atom);
+        double? ReflectionCoefficient { get; }
+        Collision Collision { get; }
+        void SetCollision(Atom atom);
+        Structure Copy();
     }
 }

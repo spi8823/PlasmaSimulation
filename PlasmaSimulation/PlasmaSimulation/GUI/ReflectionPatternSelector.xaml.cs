@@ -42,6 +42,8 @@ namespace PlasmaSimulation.GUI
         {
             ReflectionPatternComboBox.Items.Add("鏡面反射");
             ReflectionPatternComboBox.Items.Add("ランダム反射");
+            ReflectionPatternComboBox.Items.Add("コサイン分布散乱");
+            ReflectionPatternComboBox.Items.Add("コサイン反射");
         }
     }
 }

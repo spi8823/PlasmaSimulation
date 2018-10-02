@@ -34,12 +34,12 @@ namespace PlasmaSimulation.GUI
             var interval = TimeIntervalUpDown.Value ?? 10;
 
             var flux = (FluxUpDown.Value ?? 1) * Math.Pow(10, 15);
-            var count = (long)(TrialCountUpDown.Value ?? 100000);
+            var count = TrialCountUpDown.Value ?? 100000;
 
             var cylinder = new CylinderReflector(0, Vector.Zero, Vector.Forward, length, radius);
             var bottom = new Shield(1, Vector.Forward * length, Vector.Forward, radius);
 
-            var geometry = new CylinderGeometry(cylinder, bottom, null, span, interval, flux, resolution, count, 100, Atom.ReflectionPattern.Specularly);
+            var geometry = new CylinderGeometry(cylinder, bottom, null, span, interval, flux, resolution, (int)count, 100, Atom.ReflectionPattern.Specularly);
             return geometry;
         }
 
