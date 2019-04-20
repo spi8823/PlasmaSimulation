@@ -69,7 +69,7 @@ namespace PlasmaSimulation.Geometries
             return new HoleGeometry(ReflectionLimit, ReflectionCoefficient, ReflectionPattern, (CylinderReflector)Nozzle.Copy(), (CylinderReflector)SubNozzle.Copy(), (Hole)Hole.Copy(), (Shield)Detector.Copy());
         }
 
-        protected override bool ShouldTerminate(Collision collision)
+        protected override bool OnCollision(Atom atom, Collision collision)
         {
             return collision.StructureID == Detector.ID;
         }

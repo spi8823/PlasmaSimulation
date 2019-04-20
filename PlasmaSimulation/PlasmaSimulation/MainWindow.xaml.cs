@@ -36,17 +36,22 @@ namespace PlasmaSimulation
 
         private void StartKatayamaGeometry(object sender, RoutedEventArgs e)
         {
-            new GUI.KatayamaGeometryWindow().ShowDialog();
+            new GUI.GeometryWindow.KatayamaGeometryWindow().ShowDialog();
         }
 
         private void StartCylinderGeometry(object sender, RoutedEventArgs e)
         {
-            new GUI.CylinderGeometryWindow().ShowDialog();
+            new GUI.GeometryWindow.CylinderGeometryWindow().ShowDialog();
         }
 
         private void StartHoleGeometry(object sender, RoutedEventArgs e)
         {
-            new GUI.HoleGeometryWindow().ShowDialog();
+            new GUI.GeometryWindow.HoleGeometryWindow().ShowDialog();
+        }
+
+        private void StartProbeRotationGeometry(object sender, RoutedEventArgs e)
+        {
+            new GUI.GeometryWindow.ProbeRotationGeometryWindow().ShowDialog();
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlasmaSimulation.GUI
+namespace PlasmaSimulation.GUI.Control
 {
     /// <summary>
     /// CylinderReflectorSettingPanel.xaml の相互作用ロジック
@@ -49,7 +49,7 @@ namespace PlasmaSimulation.GUI
             set { SetValue(ReflectionCoefficientProperty, value); }
         }
 
-        public CylinderReflector CylinderReflector => new CylinderReflector(ID, PositionUpDown.Vector, DirectionUpDown.Vector, Length, Radius, ReflectionCoefficient);
+        public CylinderReflector CylinderReflector => new CylinderReflector(ID, PositionUpDown.Vector, DirectionUpDown.Vector, Length, Radius, Atom.ReflectionPattern.Specularly, ReflectionCoefficient);
 
         public CylinderReflectorSettingPanel()
         {

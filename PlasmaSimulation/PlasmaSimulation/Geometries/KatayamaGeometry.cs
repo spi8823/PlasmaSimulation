@@ -89,7 +89,7 @@ namespace PlasmaSimulation
             return new Atom(position, velocity);
         }
 
-        protected override bool ShouldTerminate(Collision collision)
+        protected override bool OnCollision(Atom atom, Collision collision)
         {
             return collision.StructureID == Target.ID;
         }

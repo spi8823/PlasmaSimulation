@@ -1,9 +1,10 @@
-﻿<Window x:Class="PlasmaSimulation.GUI.KatayamaGeometryWindow"
+﻿<Window x:Class="PlasmaSimulation.GUI.GeometryWindow.KatayamaGeometryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PlasmaSimulation.GUI"
+        xmlns:local="clr-namespace:PlasmaSimulation.GUI.GeometryWindow"
+        xmlns:control ="clr-namespace:PlasmaSimulation.GUI.Control"
         xmlns:ewt="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="KatayamaGeometryWindow" Height="770" Width="850" Loaded="Window_Loaded" Closed="Window_Closed">
@@ -17,27 +18,27 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <GroupBox Header="放電管">
-                    <local:CylinderReflectorSettingPanel x:Name="NozzleSettingPanel" ID="0"/>
+                    <control:CylinderReflectorSettingPanel x:Name="NozzleSettingPanel" ID="0"/>
                 </GroupBox>
                 <GroupBox Header="円筒">
-                    <local:CylinderReflectorSettingPanel x:Name="ReflectorSettingPanel" ID="1"/>
+                    <control:CylinderReflectorSettingPanel x:Name="ReflectorSettingPanel" ID="1"/>
                 </GroupBox>
                 <GroupBox Header="遮蔽板">
-                    <local:ShieldSettingPanel x:Name="ShieldSettingPanel" ID="2"/>
+                    <control:ShieldSettingPanel x:Name="ShieldSettingPanel" ID="2"/>
                 </GroupBox>
                 <GroupBox Header="ターゲット">
-                    <local:ShieldSettingPanel x:Name="TargetSettingPanel" ID="3"/>
+                    <control:ShieldSettingPanel x:Name="TargetSettingPanel" ID="3"/>
                 </GroupBox>
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <GroupBox Header="チャンバー">
-                    <local:CylinderReflectorSettingPanel x:Name="ChamberSettingPanel" ID="4"/>
+                    <control:CylinderReflectorSettingPanel x:Name="ChamberSettingPanel" ID="4"/>
                 </GroupBox>
                 <GroupBox Header="チャンバー蓋">
-                    <local:ShieldSettingPanel x:Name="ChamberTopSettingPanel" ID="5"/>
+                    <control:ShieldSettingPanel x:Name="ChamberTopSettingPanel" ID="5"/>
                 </GroupBox>
                 <GroupBox Header="チャンバー底">
-                    <local:ShieldSettingPanel x:Name="ChamberBottomSettingPanel" ID="6"/>
+                    <control:ShieldSettingPanel x:Name="ChamberBottomSettingPanel" ID="6"/>
                 </GroupBox>
             </StackPanel>
         </StackPanel>
@@ -51,7 +52,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="反射パターン" Width="80" Margin="10,0,0,0" VerticalAlignment="Center"/>
-            <local:ReflectionPatternSelector x:Name="ReflectionPatternSelector" Margin="3"/>
+            <control:ReflectionPatternSelector x:Name="ReflectionPatternSelector" Margin="3"/>
         </StackPanel>
         <Button Content="ジオメトリを見る" Width="120" Height="24" FontSize="12" Click="Button_Click" Margin="10" HorizontalAlignment="Right"/>
     </StackPanel>

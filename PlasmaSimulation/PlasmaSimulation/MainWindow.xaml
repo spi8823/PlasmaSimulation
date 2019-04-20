@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PlasmaSimulation"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="200" Loaded="Window_Loaded">
+        Title="MainWindow" Height="220" Width="200" Loaded="Window_Loaded" Top="0" Left="0">
     <Window.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="150"/>
@@ -17,6 +17,7 @@
     <StackPanel Orientation="Vertical" Margin="5">
         <Button Content="Katayama Geometry" Style="{StaticResource ButtonStyle}" Click="StartKatayamaGeometry"/>
         <Button Content="Cylinder Geometry" Style="{StaticResource ButtonStyle}" Click="StartCylinderGeometry"/>
-        <Button Content="Hole Geometry" Style="{StaticResource ButtonStyle}" Click="StartHoleGeometry"/>
+        <Button Content="ホール実験" Style="{StaticResource ButtonStyle}" Click="StartHoleGeometry"/>
+        <Button Content="プローブ回転実験" Style="{StaticResource ButtonStyle}" Click="StartProbeRotationGeometry"/>
     </StackPanel>
 </Window>

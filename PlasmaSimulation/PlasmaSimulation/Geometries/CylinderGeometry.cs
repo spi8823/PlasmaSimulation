@@ -111,7 +111,7 @@ namespace PlasmaSimulation
                 atom.Update(collision.Time);
                 atom.Reflect(collision.Normal, ReflectionPattern, random);
                 
-                if (ShouldTerminate(collision))
+                if (OnCollision(atom, collision))
                 {
                     atom.IsValid = true;
                     return true;
@@ -163,7 +163,7 @@ namespace PlasmaSimulation
             return result;
         }
 
-        protected override bool ShouldTerminate(Collision collision)
+        protected override bool OnCollision(Atom atom, Collision collision)
         {
             return collision.StructureID == Bottom.ID;
         }

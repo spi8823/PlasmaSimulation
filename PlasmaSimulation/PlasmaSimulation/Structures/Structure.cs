@@ -12,8 +12,9 @@ namespace PlasmaSimulation
         Vector Position { get; }
         Vector Direction { get; }
         double? ReflectionCoefficient { get; }
-        Collision Collision { get; }
-        void SetCollision(Atom atom);
+        Atom.ReflectionPattern ReflectionPattern { get; }
+        [Newtonsoft.Json.JsonIgnore]Collision Collision { get; }
+        bool SetCollision(Atom atom);
         Structure Copy();
     }
 }

@@ -27,6 +27,7 @@ namespace PlasmaSimulation.SimulationResults
             builder.Append("半径:" + subnozzle.Radius + ",");
             builder.Append("長さ:" + subnozzle.Length + ",");
             builder.Append("距離:" + (subnozzle.Position.Z - 40));
+            builder.Append("ホール板:" + GeometrySetting.HoleGeometry.Hole.Position.Z);
             Discription = builder.ToString();
         }
 

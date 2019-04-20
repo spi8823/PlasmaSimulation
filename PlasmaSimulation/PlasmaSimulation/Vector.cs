@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using static PlasmaSimulation.Extensions;
 using static System.Math;
+using Newtonsoft.Json;
 
 namespace PlasmaSimulation
 {
+    [JsonObject]
     public struct Vector
     {
         public static readonly Vector Right = new Vector(1, 0, 0);
@@ -46,13 +48,13 @@ namespace PlasmaSimulation
             Z = round(Z);
         }
 
-        [Newtonsoft.Json.JsonIgnore()]
-        public double Length => Math.Sqrt(X * X + Y * Y + Z * Z);
+        [JsonIgnore()]
+        public double Length => Sqrt(X * X + Y * Y + Z * Z);
 
-        [Newtonsoft.Json.JsonIgnore()]
+        [JsonIgnore()]
         public Vector Normal => this / Length;
 
-        [Newtonsoft.Json.JsonIgnore()]
+        [JsonIgnore()]
         public System.Windows.Media.Media3D.Vector3D Vector3D => new System.Windows.Media.Media3D.Vector3D(X, Y, Z);
 
         public static Vector operator+(Vector a, Vector b)
@@ -114,7 +116,11 @@ namespace PlasmaSimulation
 
         public Rotation(Vector from, Vector to)
         {
-            Normal = Cross(from, to).Normal;
+            var cross = Cross(from, to);
+            if (cross.Length == 0)
+                Normal = Vector.Forward;
+            else
+                Normal = Cross(from, to).Normal;
             Theta = Acos(Dot(from, to) / (from.Length * to.Length));
         }
 
@@ -149,5 +155,22 @@ namespace PlasmaSimulation
         }
 
         public const double RoundingValue = 0.00000001;
+
+        public static string ToString(this Atom.ReflectionPattern pattern)
+        {
+            switch(pattern)
+            {
+                case Atom.ReflectionPattern.Specularly:
+                    return "鏡面反射";
+                case Atom.ReflectionPattern.Randomly:
+                    return "ランダム反射";
+                case Atom.ReflectionPattern.CosineSpecularly:
+                    return "コサイン分布反射";
+                case Atom.ReflectionPattern.CosineRandomly:
+                    return "コサイン分布散乱";
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 }

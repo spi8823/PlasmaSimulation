@@ -15,6 +15,7 @@ namespace PlasmaSimulation
         private const string SaveFileName = "Settings.json";
         public KatayamaGeometry KatayamaGeometry { get; set; }
         public HoleGeometrySetting HoleGeometrySetting { get; set; }
+        public ProbeRotationGeometrySetting ProbeRotationGeometrySetting { get; set; }
 
         public Settings()
         {
@@ -31,6 +32,7 @@ namespace PlasmaSimulation
                 Atom.ReflectionPattern.Specularly);
 
             HoleGeometrySetting = new HoleGeometrySetting();
+            ProbeRotationGeometrySetting = new ProbeRotationGeometrySetting();
         }
 
         public static Settings Load()
@@ -92,6 +94,38 @@ namespace PlasmaSimulation
             ReflectionPattern = Atom.ReflectionPattern.Specularly;
 
             CameraPosition = new System.Windows.Media.Media3D.Point3D();
+        }
+    }
+
+    public class ProbeRotationGeometrySetting
+    {
+        public ProbeRotationGeometry Geometry { get; set; }
+        public double ProbeDistance { get; set; }
+        public double MinimumAngle { get; set; }
+        public double MaximumAngle { get; set; }
+        public double AngleInterval { get; set; }
+        public int SimulationCount { get; set; }
+        public double PlateAngle { get; set; }
+        public Atom.ReflectionPattern ReflectionPattern { get; set; }
+
+        public ProbeRotationGeometrySetting()
+        {
+            Geometry = new ProbeRotationGeometry
+                (
+                new CylinderReflector(0, 52.5 * Vector.Back, Vector.Forward, 40, 2.5, Atom.ReflectionPattern.Specularly, 0.93),
+                new Plate(1, Vector.Zero, (10 / 1.414213) * (Vector.Right + Vector.Forward), 20 * Vector.Up, Atom.ReflectionPattern.Specularly, 1),
+                new Shield(2, Vector.Zero, Vector.Right, 16, 0),
+                new Hole(3, Vector.Zero, Vector.Forward, null, Atom.ReflectionPattern.Specularly, 0),
+                new Hole(4, Vector.Zero, Vector.Forward, null, Atom.ReflectionPattern.Specularly, 0),
+                Atom.ReflectionPattern.Specularly
+                );
+
+            ProbeDistance = 50;
+            MinimumAngle = 45;
+            MaximumAngle = 135;
+            SimulationCount = 1000000;
+            PlateAngle = 45;
+            ReflectionPattern = Atom.ReflectionPattern.Specularly;
         }
     }
 }

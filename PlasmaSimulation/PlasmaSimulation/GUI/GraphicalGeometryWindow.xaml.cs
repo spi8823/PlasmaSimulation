@@ -86,7 +86,12 @@ namespace PlasmaSimulation.GUI
             else if (structure is Hole hole)
             {
                 model = importer.Load(@"Models\Hole.obj");
-                scale = new Vector(hole.Radius, hole.Radius, 1);
+                scale = new Vector(hole.Radius ?? 0, hole.Radius ?? 0, 1);
+            }
+            else if(structure is Plate plate)
+            {
+                model = importer.Load(@"Models\Plate.obj");
+                scale = new Vector(plate.HorizontalVector.Length, plate.VerticalVector.Length, 1);
             }
             else
                 throw new NotImplementedException();

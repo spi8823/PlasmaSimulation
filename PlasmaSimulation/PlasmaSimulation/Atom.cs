@@ -12,6 +12,7 @@ namespace PlasmaSimulation
     {
         public Vector Position { get; set; }
         public Vector Velocity { get; set; }
+        public int History { get; set; } = 0;
         public bool IsValid { get; set; }
         public int ReflectionCount { get; set; } = 0;
 

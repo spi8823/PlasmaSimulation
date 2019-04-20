@@ -13,7 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PlasmaSimulation.Structures;
-namespace PlasmaSimulation.GUI
+
+namespace PlasmaSimulation.GUI.Control
 {
     /// <summary>
     /// ShieldSettingPanel.xaml の相互作用ロジック
@@ -21,7 +22,7 @@ namespace PlasmaSimulation.GUI
     public partial class HoleSettingPanel : UserControl
     {
         public static readonly DependencyProperty IDProperty = DependencyProperty.Register("ID", typeof(int), typeof(HoleSettingPanel));
-        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(double), typeof(HoleSettingPanel));
+        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register("Radius", typeof(double?), typeof(HoleSettingPanel));
 
         public int ID
         {
@@ -29,9 +30,9 @@ namespace PlasmaSimulation.GUI
             set { SetValue(IDProperty, value); }
         }
 
-        public double Radius
+        public double? Radius
         {
-            get { return (double)GetValue(RadiusProperty); }
+            get { return (double?)GetValue(RadiusProperty); }
             set { SetValue(RadiusProperty, value); }
         }
 
@@ -57,7 +58,7 @@ namespace PlasmaSimulation.GUI
             DirectionUpDown.ZUpDown.Value = direction.Z;
         }
 
-        public void Set(Vector position, Vector direction, double radius)
+        public void Set(Vector position, Vector direction, double? radius)
         {
             SetPosition(position);
             SetDirection(direction);

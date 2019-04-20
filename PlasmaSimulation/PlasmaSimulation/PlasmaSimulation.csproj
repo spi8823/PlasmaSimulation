@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -127,14 +127,21 @@
     <Compile Include="Collision.cs" />
     <Compile Include="DataSet\HoleExperimentDataSet.cs" />
     <Compile Include="Geometries\HoleGeometry.cs" />
-    <Compile Include="GUI\CylinderGeometryWindow.xaml.cs">
+    <Compile Include="Geometries\ProbeRotationGeometry.cs" />
+    <Compile Include="GUI\Control\PlateSettingPanel.xaml.cs">
+      <DependentUpon>PlateSettingPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\GeometryWindow\CylinderGeometryWindow.xaml.cs">
       <DependentUpon>CylinderGeometryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\CylinderReflectorSettingPanel.xaml.cs">
+    <Compile Include="GUI\Control\CylinderReflectorSettingPanel.xaml.cs">
       <DependentUpon>CylinderReflectorSettingPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\DataSetWindow.xaml.cs">
       <DependentUpon>DataSetWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\GeometryWindow\ProbeRotationGeometryWindow.xaml.cs">
+      <DependentUpon>ProbeRotationGeometryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\GraphicalGeometryWindow.xaml.cs">
       <DependentUpon>GraphicalGeometryWindow.xaml</DependentUpon>
@@ -142,41 +149,51 @@
     <Compile Include="GUI\Graph\SimulationResultWindow.xaml.cs">
       <DependentUpon>SimulationResultWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\HoleGeometryWindow.xaml.cs">
+    <Compile Include="GUI\GeometryWindow\HoleGeometryWindow.xaml.cs">
       <DependentUpon>HoleGeometryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\KatayamaGeometryWindow.xaml.cs">
+    <Compile Include="GUI\GeometryWindow\KatayamaGeometryWindow.xaml.cs">
       <DependentUpon>KatayamaGeometryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ReflectionPatternSelector.xaml.cs">
+    <Compile Include="GUI\Control\ReflectionPatternSelector.xaml.cs">
       <DependentUpon>ReflectionPatternSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\HoleSettingPanel.xaml.cs">
+    <Compile Include="GUI\Control\HoleSettingPanel.xaml.cs">
       <DependentUpon>HoleSettingPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ShieldSettingPanel.xaml.cs">
+    <Compile Include="GUI\Control\ShieldSettingPanel.xaml.cs">
       <DependentUpon>ShieldSettingPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\VectorUpDown.xaml.cs">
+    <Compile Include="GUI\Control\VectorUpDown.xaml.cs">
       <DependentUpon>VectorUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SimulationResult\HoleGeometrySimulationResult.cs" />
+    <Compile Include="SimulationResult\ProbeRotationGeometrySimulationResult.cs" />
     <Compile Include="SimulationResult\SimulationResult.cs" />
     <Compile Include="Structures\CylinderReflector.cs" />
     <Compile Include="Structures\Hole.cs" />
+    <Compile Include="Structures\Plate.cs" />
     <Compile Include="Structures\Shield.cs" />
     <Compile Include="Structures\Structure.cs" />
     <Compile Include="Vector.cs" />
-    <Page Include="GUI\CylinderGeometryWindow.xaml">
+    <Page Include="GUI\Control\PlateSettingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\CylinderReflectorSettingPanel.xaml">
+    <Page Include="GUI\GeometryWindow\CylinderGeometryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Control\CylinderReflectorSettingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GUI\DataSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\GeometryWindow\ProbeRotationGeometryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -188,15 +205,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\HoleGeometryWindow.xaml">
+    <Page Include="GUI\GeometryWindow\HoleGeometryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\KatayamaGeometryWindow.xaml">
+    <Page Include="GUI\GeometryWindow\KatayamaGeometryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\ReflectionPatternSelector.xaml">
+    <Page Include="GUI\Control\ReflectionPatternSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,15 +221,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\HoleSettingPanel.xaml">
+    <Page Include="GUI\Control\HoleSettingPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GUI\ShieldSettingPanel.xaml">
+    <Page Include="GUI\Control\ShieldSettingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\VectorUpDown.xaml">
+    <Page Include="GUI\Control\VectorUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,6 +280,12 @@
     <None Include="Models\Hole.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Models\Plate.mtl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Models\Plate.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Models\Shield.mtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -278,6 +301,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="TODO.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

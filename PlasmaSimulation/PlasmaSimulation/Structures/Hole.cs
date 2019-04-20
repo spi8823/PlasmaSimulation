@@ -15,29 +15,37 @@ namespace PlasmaSimulation.Structures
 
         public Vector Direction { get; }
 
-        public double Radius { get; }
+        public double? Radius { get; }
 
         public double? ReflectionCoefficient { get; }
+        public Atom.ReflectionPattern ReflectionPattern { get; }
 
         public Collision Collision { get; }
 
-        public Hole(int id, Vector position, Vector direction, double radius, double? reflectionCoefficient = null)
+        public Hole(int id, Vector position, Vector direction, double? radius, Atom.ReflectionPattern reflectionPattern = Atom.ReflectionPattern.Specularly, double? reflectionCoefficient = null)
         {
             Radius = radius;
             Position = position;
-            Direction = direction;
+            Direction = direction.Normal;
             ReflectionCoefficient = reflectionCoefficient;
+            ReflectionPattern = reflectionPattern;
             ID = id;
-            Collision = new Collision(ID);
+            Collision = new Collision(ID, reflectionPattern);
         }
 
         public Structure Copy()
         {
-            return new Hole(ID, Position, Direction, Radius, ReflectionCoefficient);
+            return new Hole(ID, Position, Direction, Radius, ReflectionPattern, ReflectionCoefficient);
         }
 
-        public void SetCollision(Atom atom)
+        public bool SetCollision(Atom atom)
         {
+            if(Radius == null)
+            {
+                Collision.Disable();
+                return false;
+            }
+
             //Direction * (x - Position) = 0
             //x = atom.Position + atom.Velocity * t
             //賢い！！！！！
@@ -45,13 +53,13 @@ namespace PlasmaSimulation.Structures
             if (t <= RoundingValue || double.IsNaN(t))
             {
                 Collision.Disable();
-                return;
+                return false;
             }
             var x = atom.Position + atom.Velocity * t;
             if ((x - Position).Length < Radius)
             {
                 Collision.Disable();
-                return;
+                return false;
             }
 
             var normal = Direction;
@@ -59,6 +67,7 @@ namespace PlasmaSimulation.Structures
                 normal = -1 * normal;
 
             Collision.Set(x, normal, t);
+            return true;
         }
     }
 }

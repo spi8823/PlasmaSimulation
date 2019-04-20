@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using PlasmaSimulation.Geometries;
 using PlasmaSimulation.Structures;
 
-namespace PlasmaSimulation.GUI
+namespace PlasmaSimulation.GUI.GeometryWindow
 {
     /// <summary>
     /// HoleGeometryWindow.xaml の相互作用ロジック
@@ -83,7 +83,7 @@ namespace PlasmaSimulation.GUI
         {
             var steps = new List<SimulationResults.HoleGeometrySimulationResult.Step>();
 
-            int progressMaximum = (int)((setting.MaximumReflectionCoefficient - setting.MinimumReflectionCoefficient) / setting.ReflectionCoefficientInterval + 1) * (int)((setting.MaximumRadius - setting.MinimumRadius) / setting.RadiusInterval + 1);
+            int progressMaximum = (int)Math.Round((setting.MaximumReflectionCoefficient - setting.MinimumReflectionCoefficient) / setting.ReflectionCoefficientInterval + 1) * (int)Math.Round((setting.MaximumRadius - setting.MinimumRadius) / setting.RadiusInterval + 1);
             int progress = 0;
 
             //プログレスバー初期化
@@ -217,12 +217,12 @@ namespace PlasmaSimulation.GUI
         {
             var setting = new HoleGeometrySetting();
             setting.HoleGeometry = GetGeometry();
-            setting.MinimumReflectionCoefficient = MinimumReflectionCoefficientUpDown.Value.Value;
-            setting.MaximumReflectionCoefficient = MaximumReflectionCoefficientUpDown.Value.Value;
-            setting.ReflectionCoefficientInterval = ReflectionCoefficientIntervalUpDown.Value.Value;
-            setting.MinimumRadius = MinimumRadiusUpDown.Value.Value;
-            setting.MaximumRadius = MaximumRadiusUpDown.Value.Value;
-            setting.RadiusInterval = RadiusIntervalUpDown.Value.Value;
+            setting.MinimumReflectionCoefficient = Math.Round(MinimumReflectionCoefficientUpDown.Value.Value, 2);
+            setting.MaximumReflectionCoefficient = Math.Round(MaximumReflectionCoefficientUpDown.Value.Value, 2);
+            setting.ReflectionCoefficientInterval = Math.Round(ReflectionCoefficientIntervalUpDown.Value.Value, 2);
+            setting.MinimumRadius = Math.Round(MinimumRadiusUpDown.Value.Value, 1);
+            setting.MaximumRadius = Math.Round(MaximumRadiusUpDown.Value.Value, 1);
+            setting.RadiusInterval = Math.Round(RadiusIntervalUpDown.Value.Value, 1);
             setting.SimulationCount = SimulationCountUpDown.Value.Value;
             setting.ReflectionPattern = ReflectionPatternSelector.ReflectionPattern;
             setting.ReflectionLimit = ReflectionLimitUpDown.Value.Value;
@@ -232,6 +232,19 @@ namespace PlasmaSimulation.GUI
         private void ShowDataSetWindow(object sender, RoutedEventArgs e)
         {
             var dataset = new HoleExperimentDataSet();
+        }
+
+        private async void ExecuteScriptButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("実装してない");
+
+            foreach (var length in new[] { 20, 30, 40 })
+                foreach (var r in new[] { 2.5, 3, 4 })
+                {
+                    SubNozzleSettingPanel.Length = length;
+                    SubNozzleSettingPanel.Radius = r;
+                    await Task.Run(() => CalculateButton_Clicked(sender, e));
+                }
         }
     }
 }

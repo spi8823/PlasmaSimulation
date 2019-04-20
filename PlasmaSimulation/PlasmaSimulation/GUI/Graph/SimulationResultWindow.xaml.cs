@@ -37,6 +37,18 @@ namespace PlasmaSimulation.GUI.Graph
         private void ShowResult()
         {
             HorizontalAxis.Title = SimulationResult.HorizontalAxisTitle;
+            if (SimulationResult.HorizontalAxisMinimum.HasValue)
+                HorizontalAxis.Minimum = SimulationResult.HorizontalAxisMinimum.Value;
+            if (SimulationResult.HorizontalAxisMaximum.HasValue)
+                HorizontalAxis.Maximum = SimulationResult.HorizontalAxisMaximum.Value;
+            if (SimulationResult.HorizontalAxisStep.HasValue)
+                HorizontalAxis.MajorStep = SimulationResult.HorizontalAxisStep.Value;
+            if (SimulationResult.VerticalAxisMinimum.HasValue)
+                VerticalAxis.Minimum = SimulationResult.VerticalAxisMinimum.Value;
+            if (SimulationResult.VerticalAxisMaximum.HasValue)
+                VerticalAxis.Maximum = SimulationResult.VerticalAxisMaximum.Value;
+            if (SimulationResult.VerticalAxisStep.HasValue)
+                VerticalAxis.MajorStep = SimulationResult.VerticalAxisStep.Value;
             VerticalAxis.Title = SimulationResult.VerticalAxisTitle;
             var series = SimulationResult.GetSeries();
             foreach (var s in series)

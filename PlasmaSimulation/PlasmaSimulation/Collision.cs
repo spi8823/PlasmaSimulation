@@ -12,14 +12,16 @@ namespace PlasmaSimulation
         public double Time { get; set; }
         public Vector Position { get; set; }
         public Vector Normal { get; set; }
+        public Atom.ReflectionPattern ReflectionPattern { get; set; }
         public int StructureID { get; set; }
 
-        public Collision(int id)
+        public Collision(int id, Atom.ReflectionPattern reflectionPattern)
         {
             IsValid = false;
             Time = double.NaN;
             Position = Vector.Zero;
             Normal = Vector.Zero;
+            ReflectionPattern = reflectionPattern;
             StructureID = id;
         }
 

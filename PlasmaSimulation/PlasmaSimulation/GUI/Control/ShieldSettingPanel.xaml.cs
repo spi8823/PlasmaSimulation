@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PlasmaSimulation.GUI
+namespace PlasmaSimulation.GUI.Control
 {
     /// <summary>
     /// ShieldSettingPanel.xaml の相互作用ロジック

@@ -30,10 +30,10 @@ namespace PlasmaSimulation
         /// <summary>
         /// コンパイラ
         /// </summary>
-        /// <param name="limit"></param>
-        protected Geometry(int limit, double reflectionCoefficient, Atom.ReflectionPattern pattern, Structure[] structures)
+        /// <param name="reflectionLimit"></param>
+        protected Geometry(int reflectionLimit, double reflectionCoefficient, Atom.ReflectionPattern pattern, Structure[] structures)
         {
-            ReflectionLimit = limit;
+            ReflectionLimit = reflectionLimit;
             ReflectionCoefficient = reflectionCoefficient;
             ReflectionPattern = pattern;
             Structures = structures;
@@ -88,10 +88,10 @@ namespace PlasmaSimulation
                 }
 
                 atom.Update(collision.Time);
-                atom.Reflect(collision.Normal, ReflectionPattern, random);
+                atom.Reflect(collision.Normal, collision.ReflectionPattern, random);
 
                 //Targetと衝突したらおしまい
-                if (ShouldTerminate(collision) || random.NextDouble() > (Structures[collision.StructureID].ReflectionCoefficient ?? ReflectionCoefficient))
+                if (OnCollision(atom, collision) || random.NextDouble() > (Structures[collision.StructureID].ReflectionCoefficient ?? ReflectionCoefficient))
                 {
                     track.Add(collision.Position);
                     return track;
@@ -113,11 +113,11 @@ namespace PlasmaSimulation
                 Collision collision = null;
                 for(var i = 0;i < Structures.Length;i++)
                 {
-                    Structures[i].SetCollision(atom);
-                    var c = Structures[i].Collision;
-                    if (!c.IsValid)
+                    if (!Structures[i].SetCollision(atom))
                         continue;
-                    if(collision == null)
+                    var c = Structures[i].Collision;
+
+                    if (collision == null)
                     {
                         collision = c;
                         continue;
@@ -126,19 +126,18 @@ namespace PlasmaSimulation
                     {
                         collision = c;
                     }
-                    if (!collision.IsValid)
-                        Console.WriteLine("");
                 }
-                if(collision == null || double.IsNaN(collision.Time))
+
+                if (collision == null || double.IsNaN(collision.Time))
                 {
                     atom.IsValid = false;
                     return false;
                 }
 
                 atom.Update(collision.Time);
-                atom.Reflect(collision.Normal, ReflectionPattern, random);
+                atom.Reflect(collision.Normal, collision.ReflectionPattern, random);
 
-                if(ShouldTerminate(collision))
+                if(OnCollision(atom, collision))
                 {
                     atom.IsValid = true;
                     return true;
@@ -153,7 +152,7 @@ namespace PlasmaSimulation
             return false;
         }
 
-        protected abstract bool ShouldTerminate(Collision collision);
+        protected abstract bool OnCollision(Atom atom, Collision collision);
 
         /// <summary>
         /// ジオメトリの複製
